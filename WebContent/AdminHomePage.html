@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Online Ticketing Home Page</title>
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <link rel="stylesheet" href="resources/bootstrap-4.1.3-dist/css/bootstrap.min.css"/>
+  <script src="resources/bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <!-- NAV BAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Online Ticketing</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link active" href="/AdminHomePage.html">Movies</a>
+        <a class="nav-item nav-link" href="/ViewOrder.html">Orders</a>
+        <a class="nav-item nav-link" href="/ViewAccount.html">Accounts</a>
+      </div>
+    </div>
+    <form class="form-inline">
+      <button class="btn btn-outline-danger my-2 my-sm-0" type="submit" id="logoutbtn">Log Out</button>
+    </form>
+  </nav>
+  
+  <!-- MOVIE TABLE -->
+  <div id="movie_div" class="container">
+    <!-- HEAD -->
+    <div class="row">
+      <div class="col-sm-1"></div>
+      <div class="col-sm-9">
+        <h2>All Movies</h2>
+      </div>
+      <div class="col-sm-1" style="padding-top:7px;">
+        <button class="btn btn-outline-danger btn-sm" id="addbtn">+ Add</button>
+      </div>
+      <div class="col-sm-1"></div>
+    </div>
+  </div>
+  
+  <div class="modal fade bd-example-modal-sm" id="processModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  		<div class="modal-dialog modal-sm">
+    		<div class="modal-content">
+      		Processing...Please wait :)
+      		Here is a joke:
+      		"Knock, knock."
+      		"Who's there?"
+      		…
+      		…
+      		…
+      		"Java."
+    		</div>
+  		</div>
+	</div>
+	
+  <script type="text/javascript">
+    $(document).ready(function() {
+    	var msg = $.ajax({
+          	url: "AdminHomeControllerServlet",
+          	type: "get",
+          	async:false
+      	}).responseText;
+    	
+    	var filmList = JSON.parse(msg);
+    	$.each(filmList, function() {
+    		filmInfo = parseJson(this);
+    		createCard(filmInfo);
+    	})
+    });
+    
+    function parseJson(filmJson) {
+    	var filmInfo = {};
+		filmInfo["film_id"] = filmJson.filmId;
+		filmInfo["film_poster"] = "image/poster1.jpg";
+		filmInfo["film_title"] = filmJson.title;
+		filmInfo["film_director"] = filmJson.director;
+		filmInfo["film_maincast"] = filmJson.mainCast;
+		filmInfo["film_runninghour"] = Math.floor(filmJson.runningTime.seconds / 3600);
+		filmInfo["film_runningmin"] = filmJson.runningTime.seconds % 3600 / 60;
+		filmInfo["film_description"] = filmJson.description;
+		filmInfo["film_genre"] = filmJson.genre;
+    	return filmInfo;
+    }
+  
+    $("#logoutbtn").on("click", function () {
+    	window.location.href = "/index.html";
+    	window.event.returnValue = false;	
+    });
+    
+    $("#addbtn").on("click", function () {
+    	window.location.href = "/AddFilm.html";
+    	window.event.returnValue = false;	
+    });
+    
+    function deleteFilm(film_id) {
+    	var msg = $.ajax({
+          	url: "AdminHomeControllerServlet?id="+film_id,
+          	type: "post",
+          	async:false
+      	});
+    }
+    
+    function createCard(filmInfo) {
+    	var view_url = "/ViewFilm.html?id=";
+    	var edit_url = "/EditFilm.html?id=";
+    	
+    	var div_row = document.createElement("div");
+    	div_row.className = "row";
+    	var div_col_left = document.createElement("div");
+    	div_col_left.className = "col-sm-1";
+    	var div_col_right = document.createElement("div");
+    	div_col_right.className = "col-sm-1";
+    	var div_col_middle = document.createElement("div");
+    	div_col_middle.className = "col-sm-10";
+    	var div_card = document.createElement("div");
+    	div_card.className = "card bg-light";
+    	var form = document.createElement("form");
+    	form.className = "form-inline";
+    	var img = document.createElement("img");
+    	img.className = "card-img-left";
+    	img.src = filmInfo.film_poster;
+    	img.alt = "Card image cap";
+    	var div_cardbody = document.createElement("div");
+    	div_cardbody.className = "card-body";
+    	var h5 = document.createElement("h5");
+    	h5.className = "card-title";
+    	h5.innerHTML = filmInfo.film_title;
+    	var label = document.createElement("label");
+    	label.className = "sr-only";
+    	label.innerHTML = filmInfo.id;
+    	var p_director = document.createElement("p");
+    	p_director.className = "card-text";
+    	p_director.innerHTML = "Director: " + filmInfo.film_director;
+    	var p_maincast = document.createElement("p");
+    	p_maincast.className = "card-text";
+    	p_maincast.innerHTML = "Main Cast: " + filmInfo.film_maincast;
+    	var p_runningtime = document.createElement("p");
+    	p_runningtime.className = "card-text";
+    	var runninghour = filmInfo.film_runninghour + " hour ";
+        var runningmin = filmInfo.film_runningmin != "0"? filmInfo.film_runningmin + " min" : "";
+    	p_runningtime.innerHTML = "Running Time: " + runninghour + runningmin;
+    	var p_description = document.createElement("p");
+    	p_description.className = "card-text";
+    	p_description.innerHTML = "Description:	" + filmInfo.film_description;
+    	var p_genre = document.createElement("p");
+    	p_genre.className = "card-text";
+    	var small = document.createElement("small");
+    	small.className = "text-muted";
+    	small.innerHTML = "Genre: " + filmInfo.film_genre;
+    	p_genre.appendChild(small);
+    	var a_view = document.createElement("a");
+    	a_view.className = "btn btn-outline-primary btn-sm";
+    	a_view.href = view_url + filmInfo.film_id;
+    	a_view.innerHTML = "View";
+    	var a_edit = document.createElement("a");
+    	a_edit.className = "btn btn-outline-success btn-sm";
+    	a_edit.href = edit_url + filmInfo.film_id;
+    	a_edit.innerHTML = "Edit";
+    	var delete_span = document.createElement('span');
+	    delete_span.innerHTML = '<button class="btn btn-outline-danger btn-sm" onclick="deleteFilm(' + 
+		  						filmInfo.film_id + ')">Delete</button>';
+    	div_cardbody.appendChild(h5);
+    	div_cardbody.appendChild(p_director);
+    	div_cardbody.appendChild(label);
+    	div_cardbody.appendChild(p_maincast);
+    	div_cardbody.appendChild(p_runningtime);
+    	div_cardbody.appendChild(p_description);
+    	div_cardbody.appendChild(p_genre);
+    	div_cardbody.appendChild(a_view);
+    	div_cardbody.appendChild(a_edit);
+    	div_cardbody.appendChild(delete_span);
+    	form.appendChild(img);
+    	form.appendChild(div_cardbody);
+    	div_card.appendChild(form);
+    	div_col_middle.appendChild(div_card);
+    	div_row.appendChild(div_col_left);
+    	div_row.appendChild(div_col_middle);
+    	div_row.appendChild(div_col_right);
+    	var movie_div = document.getElementById("movie_div");
+    	movie_div.appendChild(div_row);
+    	var br = document.createElement("br");
+    	movie_div.appendChild(br);
+    }
+  </script>	
+</body>
+</html>

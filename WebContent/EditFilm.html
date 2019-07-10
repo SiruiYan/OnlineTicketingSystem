@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Edit a film</title>
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <link rel="stylesheet" href="resources/bootstrap-4.1.3-dist/css/bootstrap.min.css"/>
+  <script src="resources/bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <!-- NAV BAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Online Ticketing</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link active" href="/AdminHomePage.html">Movies</a>
+        <a class="nav-item nav-link" href="/ViewOrder.html">Orders</a>
+        <a class="nav-item nav-link" href="/ViewAccount.html">Accounts</a>
+      </div>
+    </div>
+    <form class="form-inline">
+      <button class="btn btn-outline-danger my-2 my-sm-0" type="submit" id="logoutbtn">Log Out</button>
+    </form>
+  </nav>
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-1"></div>
+      <div class="col-sm-10">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+		  <li class="nav-item">
+		    <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Information</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" id="schedule-tab" data-toggle="tab" href="#schedule" role="tab" aria-controls="schedule" aria-selected="false">Schedule</a>
+		  </li>
+		</ul>
+      </div>
+      <div class="col-sm-1"></div>
+    </div>
+  </div>
+  
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
+      <div class="container">
+	    <!-- HEAD -->
+	    <div class="row">
+	      <div class="col-sm-1"></div>
+	      <div class="col-sm-10">
+	        <h2>Edit a Movie</h2>
+	      </div>
+	      <div class="col-sm-1"></div>
+	    </div>
+	    
+	    <div class="row">
+	      <div class="col-sm-1"></div>
+	      <div class="col-sm-10">
+	        <form id="editfilm_form">
+	  		  <div class="form-group">
+	    		<label>Title</label>
+	   			<input type="text" class="form-control" name="film_title" id="film_title" placeholder="Enter title" required>
+	    	  </div>
+	    	  <!-- 
+	    	  <div class="form-group">
+	    		<label>Poster</label>
+	    		<input type="file" class="form-control-file" onchange="previewFile()">
+	    		<img src="" height="200" alt="Image preview...">
+	  		  </div>
+	  		   -->
+	    	  <div class="form-group">
+	    		<label>Director</label>
+	   			<input type="text" class="form-control" name="film_director" id="film_director" placeholder="Enter director" required>
+	    	  </div>
+	    	  <div class="form-group">
+	    		<label>Main Casts</label>
+	   			<input type="text" class="form-control" name="film_maincast" id="film_maincast" placeholder="Enter main casts" required>
+	    	  </div>
+	    	  <div class="form-group">
+	    		<label>Genre</label>
+	   			<input type="text" class="form-control" name="film_genre" id="film_genre" placeholder="Enter genre" required>
+	    	  </div>
+	    	  <div class="form-group">
+	    		<label>Running Time</label>
+	    		<div class="form-inline">
+	    		  <div class="form-group mx-sm-1 mb-2">
+	    		    <select class="form-control" name="film_runninghour" id="film_runninghour" disabled required>
+	      		      <option value="1">1</option>
+	      		      <option value="2">2</option>
+	      		      <option value="3">3</option>
+	      		      <option value="4">4</option>
+	    		    </select>
+	    		  </div>
+	    		  <label>hours</label>
+	    		  <div class="form-group mx-sm-1 mb-2">
+	    		    <select class="form-control" name="film_runningmin" id="film_runningmin" disabled required>
+	      		      <option value="0">0</option>
+	      		      <option value="15">15</option>
+	      		      <option value="30">30</option>
+	      		      <option value="45">45</option>
+	    		    </select>
+	    		  </div>
+	    		  <label>minutes</label>
+	    		</div>
+	  		  </div>
+	    	  <div class="form-group">
+	    		<label>Description</label>
+	   			<textarea class="form-control" name="film_description" id="film_description" required></textarea>
+	    	  </div>
+	  		  <button id="submitbtn" type="submit" class="btn btn-danger btn-sm">Submit</button>
+			</form>
+	      </div>
+	      <div class="col-sm-1"></div>
+	    </div>
+	  </div>
+    </div>
+    <div class="tab-pane fade" id="schedule" role="tabpanel" aria-labelledby="schedule-tab">
+      <div class="container">
+        <div class="row">
+	      <div class="col-sm-1"></div>
+	      <div class="col-sm-10">
+	        <table id="schedule_table" class="table">
+			  <thead class="thead-dark">
+			    <tr>
+			      <th scope="col">ID</th>
+			      <th scope="col">Screening Room</th>
+			      <th scope="col">Start Time</th>
+			      <th scope="col">End Time</th>
+			      <th scope="col">Price</th>
+			      <th scope="col"></th>
+			      <th scope="col"></th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			  </tbody>
+			</table>
+			<button class="btn btn-danger btn-sm" 
+			        data-toggle="modal" data-target="#addModal">Add a new schedule</button>
+			<button class="btn btn-primary btn-sm" id="savebtn">Save</button>
+	      </div>
+	      <div class="col-sm-1"></div>
+	    </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <!-- Modal -->
+	<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="schedule_id">Edit Schedule</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <form>
+	          <div class="form-group">
+	            <label class="col-form-label">Start Time:</label>
+	            <div class="form-inline">
+	            	<input type="text" class="form-control col-sm-2" id="start_day">
+	            	<label class="col-form-label col-sm-1">Day</label>
+	            	<input type="text" class="form-control col-sm-2" id="start_month">
+	            	<label class="col-form-label col-sm-2">Month</label>
+	            	<input type="text" class="form-control col-sm-2" id="start_year">
+	            	<label class="col-form-label col-sm-1">Year</label>
+	            </div>
+	            <div class="form-inline">
+	            	<input type="text" class="form-control col-sm-2" id="start_hour">
+	            	<label class="col-form-label col-sm-1">Hour</label>
+	            	<input type="text" class="form-control col-sm-2" id="start_min">
+	            	<label class="col-form-label col-sm-2">Minute</label>
+	            </div>
+	          </div>
+	          <div class="form-group">
+	            <label class="col-form-label">End Time:</label>
+	            <div class="form-inline">
+	            	<input type="text" class="form-control col-sm-2" id="end_day">
+	            	<label class="col-form-label col-sm-1">Day</label>
+	            	<input type="text" class="form-control col-sm-2" id="end_month">
+	            	<label class="col-form-label col-sm-2">Month</label>
+	            	<input type="text" class="form-control col-sm-2" id="end_year">
+	            	<label class="col-form-label col-sm-1">Year</label>
+	            </div>
+	            <div class="form-inline">
+		            <input type="text" class="form-control col-sm-2" id="end_hour">
+	            	<label class="col-form-label col-sm-1">Hour</label>
+	            	<input type="text" class="form-control col-sm-2" id="end_min">
+	            	<label class="col-form-label col-sm-2">Minute</label>
+	            </div>
+	          </div>
+	          <div class="form-group">
+	            <label class="col-form-label">Price:</label>
+	            <input type="text" class="form-control" id="price">
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-danger" id="editbtn">Confirm</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">Add schedule</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <form>
+	          <div class="form-group">
+	            <label class="col-form-label">Screening Room:</label>
+	            <select class="form-control" name="screening_room" id="screening_room" required>
+	      		      <option value="1">1</option>
+	      		      <option value="2">2</option>
+	      		      <option value="3">3</option>
+    		    </select>
+	          </div>
+	          <div class="form-group">
+	            <label class="col-form-label">Start Time:</label>
+	            <div class="form-inline">
+	            	<input type="text" class="form-control col-sm-2" id="start_day">
+	            	<label class="col-form-label col-sm-1">Day</label>
+	            	<input type="text" class="form-control col-sm-2" id="start_month">
+	            	<label class="col-form-label col-sm-2">Month</label>
+	            	<input type="text" class="form-control col-sm-2" id="start_year">
+	            	<label class="col-form-label col-sm-1">Year</label>
+	            </div>
+	            <div class="form-inline">
+	            	<input type="text" class="form-control col-sm-2" id="start_hour">
+	            	<label class="col-form-label col-sm-1">Hour</label>
+	            	<input type="text" class="form-control col-sm-2" id="start_min">
+	            	<label class="col-form-label col-sm-2">Minute</label>
+	            </div>
+	          </div>
+	          <div class="form-group">
+	            <label class="col-form-label">End Time:</label>
+	            <div class="form-inline">
+	            	<input type="text" class="form-control col-sm-2" id="end_day">
+	            	<label class="col-form-label col-sm-1">Day</label>
+	            	<input type="text" class="form-control col-sm-2" id="end_month">
+	            	<label class="col-form-label col-sm-2">Month</label>
+	            	<input type="text" class="form-control col-sm-2" id="end_year">
+	            	<label class="col-form-label col-sm-1">Year</label>
+	            </div>
+	            <div class="form-inline">
+		            <input type="text" class="form-control col-sm-2" id="end_hour">
+	            	<label class="col-form-label col-sm-1">Hour</label>
+	            	<input type="text" class="form-control col-sm-2" id="end_min">
+	            	<label class="col-form-label col-sm-2">Minute</label>
+	            </div>
+	          </div>
+	          <div class="form-group">
+	            <label class="col-form-label">Price:</label>
+	            <input type="text" class="form-control" id="price">
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        <button id="addbtn" type="button" class="btn btn-danger">Confirm</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<div class="modal fade bd-example-modal-sm" id="processModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  		<div class="modal-dialog modal-sm">
+    		<div class="modal-content">
+      		Processing...Please wait :)
+    		</div>
+  		</div>
+	</div>
+	
+	<script type="text/javascript">
+	$(document).ready(function() {
+		var film_id = getParameterByName('id');
+		var msg = $.ajax({
+		     	url: "EditFilmControllerServlet?action=basic&id="+film_id,
+		     	type: "get",
+		     	async:false
+	  	}).responseText;
+	  	
+		var filmJson = JSON.parse(msg);
+		console.log(filmJson);
+		var filmInfo = parseFilmJson(filmJson);
+		
+		var schedule_msg = $.ajax({
+	     	url: "EditFilmControllerServlet?action=schedule&id="+film_id,
+	     	type: "get",
+	     	async:false
+  		}).responseText;
+		var scheduleJson = JSON.parse(schedule_msg);
+		console.log(scheduleJson);
+		var scheduleList = [];
+		$.each(scheduleJson, function() {
+			scheduleList.push(parseScheduleJson(this));
+		});
+		console.log(scheduleList);
+		
+		setInfo(filmInfo);
+		$.each(scheduleList, function() {
+			addRow(this);	
+		});
+	  });
+	  
+	  function getParameterByName(name, url) {
+		if (!url) url = window.location.href;
+		name = name.replace(/[\[\]]/g, '\\$&');
+		var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+		    results = regex.exec(url);
+		if (!results) return null;
+		if (!results[2]) return '';
+		return decodeURIComponent(results[2].replace(/\+/g, ' '));
+	  }
+	  
+	  function setInfo(filmInfo) {
+		document.getElementById("film_title").value = filmInfo.film_title;
+		document.getElementById("film_director").value = filmInfo.film_director;
+		document.getElementById("film_maincast").value = filmInfo.film_maincast;
+		document.getElementById("film_runninghour").value = filmInfo.film_runninghour;
+		document.getElementById("film_runningmin").value = filmInfo.film_runningmin;
+		document.getElementById("film_description").value = filmInfo.film_description;
+		document.getElementById("film_genre").value = filmInfo.film_genre;
+	  }
+	  
+	  function parseScheduleJson(scheduleJson) {
+		var scheduleInfo = {};
+		scheduleInfo["schedule_id"] = scheduleJson.id;
+		scheduleInfo["screening_room"] = scheduleJson.screeningRoom.screeningRoomId;
+		scheduleInfo["start_day"] = scheduleJson.startTime.dayOfMonth;
+		scheduleInfo["start_month"] = scheduleJson.startTime.monthValue;
+		scheduleInfo["start_year"] = scheduleJson.startTime.year;
+		scheduleInfo["start_hour"] = scheduleJson.startTime.hour;
+		scheduleInfo["start_min"] = scheduleJson.startTime.minute;
+		scheduleInfo["end_day"] = scheduleJson.endTime.dayOfMonth;
+		scheduleInfo["end_month"] = scheduleJson.endTime.monthValue;
+		scheduleInfo["end_year"] = scheduleJson.endTime.year;
+		scheduleInfo["end_hour"] = scheduleJson.endTime.hour;
+		scheduleInfo["end_min"] = scheduleJson.endTime.minute;
+		scheduleInfo["price"] = scheduleJson.price;
+		return scheduleInfo;
+	  }
+	  
+	  function parseFilmJson(filmJson) {
+		var filmInfo = {};
+		filmInfo["film_id"] = filmJson.filmId;
+		filmInfo["film_poster"] = "image/poster1.jpg";
+		filmInfo["film_title"] = filmJson.title;
+		filmInfo["film_director"] = filmJson.director;
+		filmInfo["film_maincast"] = filmJson.mainCast;
+		filmInfo["film_runninghour"] = Math.floor(filmJson.runningTime.seconds / 3600);
+		filmInfo["film_runningmin"] = filmJson.runningTime.seconds % 3600 / 60;
+		filmInfo["film_description"] = filmJson.description;
+		filmInfo["film_genre"] = filmJson.genre;
+		return filmInfo;
+	  }
+	  
+	  function previewFile() {
+	    var preview = document.querySelector('img');
+	    var file    = document.querySelector('input[type=file]').files[0];
+	    var reader  = new FileReader();
+
+	    reader.addEventListener("load", function () {
+	      preview.src = reader.result;
+	    }, false);
+
+	    if (file) {
+	      reader.readAsDataURL(file);
+	    }
+	  }
+	  
+	  $("#submitbtn").on("click", function () {
+		  var form = document.getElementById("editfilm_form");
+		  var film_id = getParameterByName('id');
+		  var jsonData = {};
+	      $.each($(form).serializeArray(), function() {
+	        jsonData[this.name] = this.value;
+	      });
+	      jsonData["film_id"] = film_id;
+	      // TODO pass image file through json
+	      //var film_poster = document.querySelector('input[type=file]').files[0];
+	      //jsonData["film_poster"] = film_poster;
+	      var f_url = "EditFilmControllerServlet?action=basic";
+	      var msg = $.ajax({
+	          	url: f_url,
+	          	type: "post",
+	          	dataType: 'json',
+	          	data: jsonData,
+	          	async:false
+	      	}).responseText;
+	      if (msg == "success") {
+	    	  window.location.href = "/AdminHomePage.html";
+	      	  window.event.returnValue = false;
+	      }
+	  });
+	  
+	  $("#savebtn").on("click", function() {
+		  var modal = document.getElementById("processModal");
+	  	  $(modal).modal('show');
+	  	  setTimeout(function(){
+	  		var msg = $.ajax({
+        		url: "EditFilmControllerServlet?action=saveSchedule",
+        		type: "post",
+        		async:false
+    		}).responseText;
+		  	console.log(msg);
+		  	document.location.reload(true);
+	  	  }, 1000);
+	  });
+	  
+	  function getScheduleInfo(modalId) {
+		  var modal = document.getElementById(modalId);
+		  var film_id = getParameterByName('id');
+		  var scheduleInfo = {};
+		  if (modalId == "addModal") {
+			  scheduleInfo["screening_room"] = $(modal).find('.modal-body #screening_room').val();
+		  }
+		  scheduleInfo["start_day"] = $(modal).find('.modal-body #start_day').val();
+		  scheduleInfo["start_month"] = $(modal).find('.modal-body #start_month').val();
+		  scheduleInfo["start_year"] = $(modal).find('.modal-body #start_year').val();
+		  scheduleInfo["start_hour"] = $(modal).find('.modal-body #start_hour').val();
+		  scheduleInfo["start_min"] = $(modal).find('.modal-body #start_min').val();
+		  scheduleInfo["end_day"] = $(modal).find('.modal-body #end_day').val();
+		  scheduleInfo["end_month"] = $(modal).find('.modal-body #end_month').val();
+		  scheduleInfo["end_year"] = $(modal).find('.modal-body #end_year').val();
+		  scheduleInfo["end_hour"] = $(modal).find('.modal-body #end_hour').val();
+		  scheduleInfo["end_min"] = $(modal).find('.modal-body #end_min').val();
+		  scheduleInfo["price"] = $(modal).find('.modal-body #price').val();
+		  scheduleInfo["schedule_id"] = $(modal).find('.modal-header #schedule_id').val();
+		  scheduleInfo["film_id"] = film_id;
+		  return scheduleInfo;
+	  }
+	  
+	  $("#addbtn").on("click", function () {
+		  var scheduleInfo = getScheduleInfo("addModal");
+		  if (validator(scheduleInfo)) {
+			  var msg = $.ajax({
+	          		url: "EditFilmControllerServlet?action=addSchedule",
+	          		type: "post",
+	          		dataType: 'json',
+	          		data: scheduleInfo,
+	          		async:false
+	      		}).responseText;
+			  scheduleInfo["schedule_id"] = msg;
+			  addRow(scheduleInfo);
+			  var modal = document.getElementById("addModal");
+			  $(modal).modal('hide');  
+		  } else {
+			  alert("All fields can not be empty.");
+		  }
+	  });
+	  
+	  $("#editbtn").on("click", function () {
+		  var scheduleInfo = getScheduleInfo("editModal");
+		  if (validator(scheduleInfo)) {
+			  var msg = $.ajax({
+	        		url: "EditFilmControllerServlet?action=editSchedule",
+	        		type: "post",
+	        		dataType: 'json',
+	        		data: scheduleInfo,
+	        		async:false
+	    		}).responseText;
+			  console.log(msg);
+			  updateTable(scheduleInfo);
+			  var modal = document.getElementById("editModal");
+			  $(modal).modal('hide');
+		  } else {
+			  alert("All fields can not be empty.");
+		  }
+	  });
+	  
+	  function validator(scheduleInfo) {
+		  if (scheduleInfo.start_day == "" || 
+			  scheduleInfo.start_month == "" ||
+			  scheduleInfo.start_year == "" ||
+			  scheduleInfo.start_hour == "" ||
+			  scheduleInfo.start_min == "" ||
+			  scheduleInfo.end_day == "" || 
+			  scheduleInfo.end_month == "" ||
+			  scheduleInfo.end_year == "" ||
+			  scheduleInfo.end_hour == "" ||
+			  scheduleInfo.end_min == "" ||
+			  scheduleInfo.price == "")
+		  {
+			  return false;
+		  } else {
+			  return true;
+		  }
+	  }
+	  
+	  function updateTable(scheduleInfo) {
+		  var scheduleId = scheduleInfo.schedule_id;
+		  var start_time = scheduleInfo.start_day + "/" +
+			 	 scheduleInfo.start_month + "/" +
+				 scheduleInfo.start_year + " " +
+				 scheduleInfo.start_hour + ":" +
+				 scheduleInfo.start_min;
+		  var end_time = scheduleInfo.end_day + "/" +
+          				 scheduleInfo.end_month + "/" +
+          				 scheduleInfo.end_year + " " +
+          				 scheduleInfo.end_hour + ":" +
+          				 scheduleInfo.end_min;
+		  var price = "$" + scheduleInfo.price;
+		  document.getElementById(scheduleId+'_st').innerHTML = start_time;
+		  document.getElementById(scheduleId+'_et').innerHTML = end_time;
+		  document.getElementById(scheduleId+'_p').innerHTML = price;
+		  var btn = document.getElementById(scheduleId+'_btn');
+		  btn.setAttribute("data-start-day",scheduleInfo.start_day);
+		  btn.setAttribute("data-start-month",scheduleInfo.start_month);
+		  btn.setAttribute("data-start-year",scheduleInfo.start_year);
+		  btn.setAttribute("data-start-hour",scheduleInfo.start_hour);
+		  btn.setAttribute("data-start-min",scheduleInfo.start_min);
+		  btn.setAttribute("data-end-day",scheduleInfo.end_day);
+		  btn.setAttribute("data-end-month",scheduleInfo.end_month);
+		  btn.setAttribute("data-end-year",scheduleInfo.end_year);
+		  btn.setAttribute("data-end-hour",scheduleInfo.end_hour);
+		  btn.setAttribute("data-end-min",scheduleInfo.end_min);
+		  btn.setAttribute("data-price",scheduleInfo.price);
+	  }
+	  
+	  function addRow(scheduleInfo) {
+		  var body = document.getElementById("schedule_table");
+		  var row = getRow(scheduleInfo);
+		  body.appendChild(row);
+	  }
+	  
+	  function getRow(scheduleInfo) {
+		  var row = document.createElement("tr");
+		  row.id = scheduleInfo.schedule_id;
+		  var title = document.createElement("th");
+		  title.scope = "row";
+		  title.innerHTML = scheduleInfo.schedule_id;
+		  var screening = document.createElement("td");
+		  screening.innerHTML = scheduleInfo.screening_room;
+  		  var starttime = scheduleInfo.start_day + "/" +
+  						 scheduleInfo.start_month + "/" +
+  						 scheduleInfo.start_year + " " +
+  						 scheduleInfo.start_hour + ":" +
+  						 scheduleInfo.start_min;
+		  var start_time = document.createElement("td");
+		  start_time.innerHTML = starttime;
+		  start_time.id = scheduleInfo.schedule_id + "_st";
+		  var endtime = scheduleInfo.end_day + "/" +
+		                scheduleInfo.end_month + "/" +
+		                scheduleInfo.end_year + " " +
+		                scheduleInfo.end_hour + ":" +
+		                scheduleInfo.end_min;
+		  var end_time = document.createElement("td");
+		  end_time.innerHTML = endtime;
+		  end_time.id = scheduleInfo.schedule_id + "_et";
+		  var price = document.createElement("td");
+		  price.innerHTML = "$" + scheduleInfo.price;
+		  price.id = scheduleInfo.schedule_id + "_p";
+		  var edit_td = document.createElement("td");
+		  var edit_span = document.createElement('span');
+		  edit_span.innerHTML = '<button type="button" class="btn btn-primary btn-sm"' + 
+		                   'data-toggle="modal" data-target="#editModal" ' + 
+		                   'data-start-day="'+scheduleInfo.start_day+'"'+
+		                   'data-start-month="'+scheduleInfo.start_month+'"'+
+		                   'data-start-year="'+scheduleInfo.start_year+'"'+
+		                   'data-start-hour="'+scheduleInfo.start_hour+'"'+
+		                   'data-start-min="'+scheduleInfo.start_min+'"'+
+		                   'data-end-day="'+scheduleInfo.end_day+'"'+
+		                   'data-end-month="'+scheduleInfo.end_month+'"'+
+		                   'data-end-year="'+scheduleInfo.end_year+'"'+
+		                   'data-end-hour="'+scheduleInfo.end_hour+'"'+
+		                   'data-end-min="'+scheduleInfo.end_min+'"'+
+		                   'data-price="'+scheduleInfo.price+'"'+
+		                   'data-schedule-id="'+scheduleInfo.schedule_id+'"'+
+		                   'id="'+scheduleInfo.schedule_id+'_btn"'+
+		                   '>' 
+		  					+ "Edit" +'</button>';
+		  edit_td.appendChild(edit_span);
+		  var delete_td = document.createElement("td");
+		  var delete_span = document.createElement('span');
+		  delete_span.innerHTML = '<button class="btn btn-danger btn-sm" onclick="deleteRow(\'' + 
+		  						scheduleInfo.schedule_id + '\')">Delete</button>';
+		  delete_td.appendChild(delete_span);
+		  row.appendChild(title);
+		  row.appendChild(screening);
+		  row.appendChild(start_time);
+		  row.appendChild(end_time);
+		  row.appendChild(price);
+		  row.appendChild(edit_td);
+		  row.appendChild(delete_td);
+		  return row;
+	  }
+	  
+	  function deleteRow(id) {
+		  var schedule_id = id;
+		  var msg = $.ajax({
+        		url: "EditFilmControllerServlet?action=deleteSchedule&id=" + schedule_id,
+        		type: "post",
+        		async:false
+    		}).responseText;
+		  console.log(msg);
+		  $('#'+id).remove();
+	  }
+	
+	$('#editModal').on('show.bs.modal', function (event) {
+		var button = $(event.relatedTarget); // Button that triggered the modal
+		var start_day = button.attr("data-start-day");
+		var start_month = button.attr("data-start-month");
+		var start_year = button.attr("data-start-year");
+		var start_hour = button.attr("data-start-hour");
+		var start_min = button.attr("data-start-min");
+		var end_day = button.attr("data-end-day");
+		var end_month = button.attr("data-end-month");
+		var end_year = button.attr("data-end-year");
+		var end_hour = button.attr("data-end-hour");
+		var end_min = button.attr("data-end-min");
+		var price = button.attr("data-price");
+		var schedule_id = button.data('schedule-id');
+		
+		var modal = $(this);
+	    modal.find('.modal-body #start_day').val(start_day);
+	    modal.find('.modal-body #start_month').val(start_month);
+	    modal.find('.modal-body #start_year').val(start_year);
+	    modal.find('.modal-body #start_hour').val(start_hour);
+	    modal.find('.modal-body #start_min').val(start_min);
+	    modal.find('.modal-body #end_day').val(end_day);
+	    modal.find('.modal-body #end_month').val(end_month);
+	    modal.find('.modal-body #end_year').val(end_year);
+	    modal.find('.modal-body #end_hour').val(end_hour);
+	    modal.find('.modal-body #end_min').val(end_min);
+	    modal.find('.modal-body #price').val(price);
+	    modal.find('.modal-header #schedule_id').val(schedule_id);
+	    console.log(modal.find('.modal-header #schedule_id').val());
+	})
+	
+	$('#editModal').on('hide.bs.modal', function (event) {
+		var modal = $(this);
+		modal.find('.modal-body #start_day').val("");
+	    modal.find('.modal-body #start_month').val("");
+	    modal.find('.modal-body #start_year').val("");
+	    modal.find('.modal-body #start_hour').val("");
+	    modal.find('.modal-body #start_min').val("");
+	    modal.find('.modal-body #end_day').val("");
+	    modal.find('.modal-body #end_month').val("");
+	    modal.find('.modal-body #end_year').val("");
+	    modal.find('.modal-body #end_hour').val("");
+	    modal.find('.modal-body #end_min').val("");
+	    modal.find('.modal-body #price').val("");
+	    modal.find('.modal-header #schedule_id').val("");
+	});
+	
+	$('#addModal').on('hide.bs.modal', function (event) {
+		var modal = $(this);
+		modal.find('.modal-body #screening_room').val("");
+		modal.find('.modal-body #start_day').val("");
+	    modal.find('.modal-body #start_month').val("");
+	    modal.find('.modal-body #start_year').val("");
+	    modal.find('.modal-body #start_hour').val("");
+	    modal.find('.modal-body #start_min').val("");
+	    modal.find('.modal-body #end_day').val("");
+	    modal.find('.modal-body #end_month').val("");
+	    modal.find('.modal-body #end_year').val("");
+	    modal.find('.modal-body #end_hour').val("");
+	    modal.find('.modal-body #end_min').val("");
+	    modal.find('.modal-body #price').val("");
+	});
+	
+	$("#logoutbtn").on("click", function () {
+    	window.location.href = "/index.html";
+    	window.event.returnValue = false;	
+    });
+	</script>
+
+</body>
+</html>

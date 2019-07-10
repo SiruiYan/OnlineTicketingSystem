@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Add new film</title>
+  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <link rel="stylesheet" href="resources/bootstrap-4.1.3-dist/css/bootstrap.min.css"/>
+  <script src="resources/bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="resources/bootstrapvalidator-0.4.5/dist/css/bootstrapValidator.min.css"/>
+  <script src="resources/bootstrapvalidator-0.4.5/dist/js/bootstrapValidator.min.js"></script>
+</head>
+<body>
+  <!-- NAV BAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Online Ticketing</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link active" href="/AdminHomePage.html">Movies</a>
+        <a class="nav-item nav-link" href="/ViewOrder.html">Orders</a>
+        <a class="nav-item nav-link" href="/ViewAccount.html">Accounts</a>
+      </div>
+    </div>
+    <form class="form-inline">
+      <button class="btn btn-outline-danger my-2 my-sm-0" type="submit" id="logoutbtn">Log Out</button>
+    </form>
+  </nav>
+  
+  <div class="container">
+    <!-- HEAD -->
+    <div class="row">
+      <div class="col-sm-1"></div>
+      <div class="col-sm-10">
+        <h2>Add a Movie</h2>
+      </div>
+      <div class="col-sm-1"></div>
+    </div>
+    
+    <div class="row">
+      <div class="col-sm-1"></div>
+      <div class="col-sm-10">
+        <form id="addfilm_form">
+  		  <div class="form-group">
+    		<label>Title</label>
+   			<input type="text" class="form-control" name="film_title" id="film_title" placeholder="Enter title" required>
+    	  </div>
+    	  <div class="form-group">
+    		<label>Poster (upload function does not go live)</label>
+    		<input type="file" class="form-control-file" onchange="previewFile()">
+    		<img src="" height="200" alt="Image preview...">
+  		  </div>
+    	  <div class="form-group">
+    		<label>Director</label>
+   			<input type="text" class="form-control" name="film_director" id="film_director" placeholder="Enter director" required>
+    	  </div>
+    	  <div class="form-group">
+    		<label>Main Casts</label>
+   			<input type="text" class="form-control" name="film_maincast" id="film_maincast" placeholder="Enter main casts" required>
+    	  </div>
+    	  <div class="form-group">
+    		<label>Genre</label>
+   			<input type="text" class="form-control" name="film_genre" id="film_genre" placeholder="Enter genre" required>
+    	  </div>
+    	  <div class="form-group">
+    		<label>Running Time</label>
+    		<div class="form-inline">
+    		  <div class="form-group mx-sm-1 mb-2">
+    		    <select class="form-control" name="film_runninghour" id="film_runninghour" required>
+      		      <option value="1">1</option>
+      		      <option value="2">2</option>
+      		      <option value="3">3</option>
+      		      <option value="4">4</option>
+    		    </select>
+    		  </div>
+    		  <label>hours</label>
+    		  <div class="form-group mx-sm-1 mb-2">
+    		    <select class="form-control" name="film_runningmin" id="film_runningmin" required>
+      		      <option value="0">0</option>
+      		      <option value="15">15</option>
+      		      <option value="30">30</option>
+      		      <option value="45">45</option>
+    		    </select>
+    		  </div>
+    		  <label>minutes</label>
+    		</div>
+  		  </div>
+    	  <div class="form-group">
+    		<label>Description</label>
+   			<textarea class="form-control" name="film_description" id="film_description" required></textarea>
+    	  </div>
+  		  <button id="submitbtn" type="submit" class="btn btn-danger btn-sm">Submit</button>
+		</form>
+      </div>
+      <div class="col-sm-1"></div>
+    </div>
+  </div>
+  
+  <!-- Modal -->
+	<div class="modal fade" id="submitModal" tabindex="-1" role="dialog" aria-labelledby="submitModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="submitModalLabel">Confirm submit</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        Do you want to submit this form?
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-danger">Submit</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+  <script type="text/javascript">
+  function previewFile() {
+    var preview = document.querySelector('img');
+    var file    = document.querySelector('input[type=file]').files[0];
+    var reader  = new FileReader();
+
+    reader.addEventListener("load", function () {
+      preview.src = reader.result;
+    }, false);
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
+  
+  $("#submitbtn").on("click", function () {
+	  var form = document.getElementById("addfilm_form");
+	  var jsonData = {};
+      $.each($(form).serializeArray(), function() {
+        jsonData[this.name] = this.value;
+      });
+      // TODO pass image file through json
+      //var film_poster = document.querySelector('input[type=file]').files[0];
+      //jsonData["film_poster"] = film_poster;
+      console.log(jsonData);
+      var f_url = "AddFilmControllerServlet";
+      var msg = $.ajax({
+          	url: f_url,
+          	type: "post",
+          	dataType: 'json',
+          	data: jsonData,
+          	async:false
+      	}).responseText;
+      if (msg == "success") {
+    	  window.location.href = "/AdminHomePage.html";
+      	  window.event.returnValue = false;	
+      }
+  });
+  
+  $("#logoutbtn").on("click", function () {
+  	window.location.href = "/index.html";
+  	window.event.returnValue = false;	
+  });
+  </script>
+</body>
+</html>
