@@ -1,1 +1,2 @@
 # OnlineTicketingSystem
+The cinema online ticketing system is a web-based system for the cinema manager to mange the selling of movie tickets and for customers to buy tickets. This system follows the business rules of the cinema selling tickets. It stores title, description, poster, screening room, time and ticket price of all the movies on, order information of all customers, and all account information. Multiple users can access this system at the same time and the information shown on the webpage is persistent.
